@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.infinite.crm.model.Admin;
 import com.infinite.crm.model.LoginMessage;
-import com.infinite.crm.repository.AdminRepository;
+import com.infinite.crm.service.AdminService;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -17,11 +17,11 @@ import com.infinite.crm.repository.AdminRepository;
 public class AdminController {
 
 	@Autowired
-	private AdminRepository adminRepository;
+	private AdminService adminService;
 
 	@PostMapping(path = "/admin/login")
 	public LoginMessage loginadmin(@RequestBody Admin admin) {
-		Admin email = adminRepository.findByEmail(admin.getEmail());
+		Admin email = adminService.findByEmail(admin.getEmail());
 		if (email != null) {
 			String password = admin.getPassword();
 			String userpass = email.getPassword();
