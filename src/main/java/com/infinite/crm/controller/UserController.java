@@ -28,6 +28,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	
 	@PostMapping("/user")
 	User newUser(@RequestBody User newUser) {
 		System.out.println("1");
