@@ -18,6 +18,7 @@ import com.infinite.crm.model.LoginFront;
 import com.infinite.crm.model.LoginMessage;
 import com.infinite.crm.model.User;
 import com.infinite.crm.repository.UserRepository;
+import com.infinite.crm.service.UserService;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -25,17 +26,17 @@ import com.infinite.crm.repository.UserRepository;
 public class UserController {
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 	
 	@PostMapping("/user")
 	User newUser(@RequestBody User newUser) {
 		System.out.println("1");
-		return userRepository.save(newUser);
+		return userService.save(newUser);
 	}
 
 	@PostMapping(path = "/users/login")
 	LoginMessage loginuser(@RequestBody LoginFront loginFront) {
-		User email = userRepository.findByEmail(loginFront.getEmail());
+		User email = userService.findByEmail(loginFront.getEmail());
 		if (email != null) {
 			String password = loginFront.getPassword();
 			String userpass = email.getPassword();
@@ -51,32 +52,27 @@ public class UserController {
 
 	@GetMapping("/users")
 	List<User> getAllUsers() {
-		return userRepository.findAll();
+		return userService.findAll();
 		
 		
 	}
 
 	@GetMapping("/user/{id}")
 	User getUserById(@PathVariable Long id) {
-		return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+		return userService.findById1(id);
 	}
 
 	@PutMapping("/user/{id}")
 	User updateUser(@RequestBody User newUser, @PathVariable Long id) {
-		return userRepository.findById(id).map(user -> {
-			user.setName(newUser.getName());
-			user.setPassword(newUser.getPassword());
-			user.setEmail(newUser.getEmail());
-			return userRepository.save(user);
-		}).orElseThrow(() -> new UserNotFoundException(id));
+		return userService.findById2(id,newUser);
 	}
 
 	@DeleteMapping("/api/n1/user/{id}")
 	String deleteUser(@PathVariable Long id) {
-		if (!userRepository.existsById(id)) {
+		if (!userService.existsById(id)) {
 			throw new UserNotFoundException(id);
 		}
-		userRepository.deleteById(id);
+		userService.deleteById(id);
 		return "User with id " + id + " has been deleted success.";
 	}
 
