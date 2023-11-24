@@ -31,7 +31,7 @@ public class UserController {
 	@PostMapping("/user")
 	User newUser(@RequestBody User newUser) {
 		System.out.println("1");
-		return userService.save(newUser);
+		return userService.save(newUser);		
 	}
 
 	@PostMapping(path = "/users/login")
