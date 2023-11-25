@@ -1,4 +1,4 @@
-FROM java:8
+FROM java:1.8
 EXPOSE 8082
 ADD /target/dockerdemo.jar dockerdemo.jar
 ENTRYPOINT ["java", "-jar", "dockerdemo.jar"]
